@@ -1,0 +1,2 @@
+El programa tiene dos archivos, uno con los 100.000 participantes y otra para realizar las pruebas. Dependiendo de
+la cual se desee ambas estaran en el método, basta con comentar la que no se va a usar.
