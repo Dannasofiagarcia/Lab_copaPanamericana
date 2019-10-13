@@ -76,7 +76,7 @@ public class ParticipantePosible implements Comparable {
 		if (compareTo(nuevo.getId()) == 0)
 			// throw new ContactoRepetidoException( nuevo.nombre );
 
-			//Verifica si el que invoca el metodo es mayor que el nuevo
+			// Verifica si el que invoca el metodo es mayor que el nuevo
 			if (compareTo(nuevo.getId()) > 0) {
 				// Debe agregar el nuevo contacto por el subárbol izquierdo
 				if (izquierda == null)
@@ -95,4 +95,25 @@ public class ParticipantePosible implements Comparable {
 			}
 	}
 
+	// Metodo para saber el peso del arbol
+
+	public int darPeso() {
+		int p1 = (izquierda == null) ? 0 : izquierda.darPeso();
+		int p2 = (derecha == null) ? 0 : derecha.darPeso();
+		return 1 + p1 + p2;
+	}
+
+	// Metodo que busca un participante por el ID
+
+	public ParticipantePosible buscar(String id) {
+		if (id.compareToIgnoreCase(id) == 0)
+			return this;
+		else if (id.compareToIgnoreCase(id) > 0)
+			// condicion ? si es verdadero : si no lo es
+			return (izquierda == null) ? null : izquierda.buscar(id);
+		else
+			return (derecha == null) ? null : derecha.buscar(id);
+	}
+	
+	
 }
