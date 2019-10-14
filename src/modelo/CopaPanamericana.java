@@ -9,8 +9,10 @@ public class CopaPanamericana {
 	public final static String SP = File.separator;
 	public final static String RAIZ = "C:" + SP + "Users" + SP + "Danna García" + SP + "Documents" + SP
 			+ "copaPanamericana" + SP;
-	public final static String RUTA_GENERADOS = "data" + SP + "Almacenamiento" + "posiblesParticipantes";
-	public final static String RUTA_PRUEBA = "data" + SP + "Almacenamiento" + "posiblesParticipantesPrueba";
+	public final static String RUTA_GENERADOS = RAIZ + "data" + SP + "Almacenamiento" + SP
+			+ "posiblesParticipantes.csv";
+	public final static String RUTA_PRUEBA = RAIZ + "data" + SP + "Almacenamiento" + SP
+			+ "posiblesParticipantesPrueba.csv";
 
 	// RELACIONES
 
@@ -20,7 +22,8 @@ public class CopaPanamericana {
 	// CONSTRUCTOR
 
 	public CopaPanamericana() {
-		//agregarParticipanteInscritoAleatoriamente();
+		//cargarDatosGenerados(RUTA_PRUEBA);
+		cargarDatosGenerados(RUTA_GENERADOS);
 	}
 
 	// METODOS
@@ -53,18 +56,19 @@ public class CopaPanamericana {
 			String mensaje = reader.readLine();
 			while (mensaje != null) {
 				String[] datos = mensaje.split(",");
-				ParticipantePosible nuevo = new ParticipantePosible(datos[2], datos[3], datos[1]);
-				primerParticipantePosible.insertar(nuevo);
+				ParticipantePosible nuevo = new ParticipantePosible(datos[1], datos[2], datos[0]);
+				if (nuevo != null)
+					agregarParticipantePosible(nuevo);
 				mensaje = reader.readLine();
 			}
 			reader.close();
 			msg = "Los datos fueron cargados con éxito";
 
 		} catch (FileNotFoundException e) {
-			msg = "Hubo un error cargando los datos";
+			e.printStackTrace();
 
 		} catch (IOException e) {
-			msg = "Hubo un error cargando los datos";
+			e.printStackTrace();
 		}
 		return msg;
 	}
@@ -75,15 +79,22 @@ public class CopaPanamericana {
 		String msg = "";
 		int contador = 0;
 		int random = 0;
+		boolean igual = false;
 		msg = "Nombre de los participantes elegidos aleatoriamente \n";
 		// Generar un numero entre el 1 y el 100.000
-		while (contador != primerParticipantePosible.darPeso()) {
-			random = (int) (Math.random() * (100000 - 1) + 100000);
+		while (contador != (int) cantidadPosiblesParticipantes() / 2) {
+			random = (int) (Math.random() * cantidadPosiblesParticipantes() + 1);
 			String idRandom = String.valueOf(random);
-			ParticipantePosible temp = primerParticipantePosible.buscar(idRandom);
-			ParticipanteInscrito nuevo = new ParticipanteInscrito(temp.getNombre(), temp.getApellido(), temp.getId());
-			agregarParticipanteInscrito(nuevo);
-			msg += nuevo.getNombre() + " " + nuevo.getApellido() + "\n";
+
+			ParticipantePosible temp = buscarPosibleParticipante(idRandom);
+			if (temp != null) {
+				ParticipanteInscrito nuevo = new ParticipanteInscrito(temp.getNombre(), temp.getApellido(),
+						temp.getId());
+				agregarParticipanteInscrito(nuevo);
+				msg += nuevo.getNombre() + " " + nuevo.getApellido() + "\n";
+			}
+
+			contador++;
 		}
 		return msg;
 	}
@@ -91,7 +102,9 @@ public class CopaPanamericana {
 	// Metodo para agregar un posible participante
 
 	public void agregarParticipantePosible(ParticipantePosible nuevo) {
-		if (nuevo != null)
+		if (primerParticipantePosible == null)
+			primerParticipantePosible = nuevo;
+		else
 			primerParticipantePosible.insertar(nuevo);
 	}
 
@@ -119,15 +132,33 @@ public class CopaPanamericana {
 		}
 	}
 
-	// Metodo que busca un posible participante
+	// Metodo que verifica que el id no esta repetido
 
-	public String buscarPosibleParticipante(String id) {
+	public boolean idRepetido(String id) {
+		boolean repetido = false;
+		ParticipanteInscrito actual = primerParticipanteInscrito;
+		while (actual != null) {
+			if (actual.getId().equals(id))
+				repetido = true;
+			else
+				actual = actual.getParticipanteSiguiente();
+		}
+		return repetido;
+	}
+
+	// Metodo que busca un posible participante y muestra cuanto tiempo tardo
+
+	public String mostrarPosibleParticipanteEncontrado(String id) {
 		String msg = "";
 		long tiempoActual = System.currentTimeMillis();
-		ParticipantePosible participante = primerParticipantePosible.buscar(id);
+
+		ParticipantePosible participante = buscarPosibleParticipante(id);
+
 		long tiempoDespues = System.currentTimeMillis();
 		long tiempoTotal = tiempoDespues - tiempoActual;
+
 		msg = "El tiempo que tardo el programa en buscar el ID " + id + " en el arbol fue de " + tiempoTotal + "\n";
+
 		if (participante != null)
 			msg += "Se encontró el participante buscado \nNombre del participante: " + participante.getNombre()
 					+ "\nApellido del participante: " + participante.getApellido() + "\nID del participante: "
@@ -138,30 +169,46 @@ public class CopaPanamericana {
 		return msg;
 	}
 
-	// Metodo que busca un participante por el ID
+	// Metodo que busca un participante inscrito y muestra cuanto tiempo tardo
 
-	public String buscarParticipanteInscrito(String id) {
+	public String mostrarParticipanteInscritoEncontrado(String id) {
 		String msg = "";
-		boolean encontrado = false;
 		long tiempoActual = System.currentTimeMillis();
-		ParticipanteInscrito actual = primerParticipanteInscrito;
-		while (actual != null && !encontrado) {
-			if(actual.getId().equals(id)) {
-				encontrado = true;
-				msg += "Se encontró el participante buscado \nNombre del participante: " + actual.getNombre()
-				+ "\nApellido del participante: " + actual.getApellido() + "\nID del participante: "
-				+ actual.getId() + "\n";
-			}
-			else {
-				actual = actual.getParticipanteSiguiente();
-			}
-		}//Cierra el while
+
+		ParticipanteInscrito participante = buscarParticipanteInscrito(id);
+
 		long tiempoDespues = System.currentTimeMillis();
 		long tiempoTotal = tiempoDespues - tiempoActual;
-		msg = "El tiempo que tardo el programa en buscar el ID " + id + " en el arbol fue de " + tiempoTotal + "\n";
-		if(encontrado == false)
-			msg += "No existe ningun participante con el ID ingresado";
+
+		msg = "El tiempo que tardo el programa en buscar el ID " + id + " en la lista doblemente enlazada fue de " + tiempoTotal + "\n";
+
+		if (participante != null)
+			msg += "Se encontró el participante buscado \nNombre del participante: " + participante.getNombre()
+					+ "\nApellido del participante: " + participante.getApellido() + "\nID del participante: "
+					+ participante.getId();
+		else
+			msg += "No existe ningún posible participante con el ID ingresado";
+
 		return msg;
+	}
+
+	// Metodo para buscar posible participante
+
+	public ParticipantePosible buscarPosibleParticipante(String id) {
+		return primerParticipantePosible == null ? null : primerParticipantePosible.buscar(id);
+	}
+
+	// Metodo para buscar un participante inscrito
+
+	public ParticipanteInscrito buscarParticipanteInscrito(String id) {
+		return primerParticipanteInscrito == null ? null : primerParticipanteInscrito.buscarParticipanteInscrito(id);
+	}
+	
+	//Metodo para saber cuantos posibles participantes hay
+	
+	public int cantidadPosiblesParticipantes() {
+		int cantidad = primerParticipantePosible.darPeso();
+		return cantidad;
 	}
 
 }

@@ -73,11 +73,11 @@ public class ParticipantePosible implements Comparable {
 	}
 
 	public void insertar(ParticipantePosible nuevo) {
-		if (compareTo(nuevo.getId()) == 0)
+		//if (compareTo(nuevo) == 0)
 			// throw new ContactoRepetidoException( nuevo.nombre );
 
 			// Verifica si el que invoca el metodo es mayor que el nuevo
-			if (compareTo(nuevo.getId()) > 0) {
+			if (compareTo(nuevo) > 0) {
 				// Debe agregar el nuevo contacto por el subárbol izquierdo
 				if (izquierda == null)
 					izquierda = nuevo;
@@ -105,14 +105,14 @@ public class ParticipantePosible implements Comparable {
 
 	// Metodo que busca un participante por el ID
 
-	public ParticipantePosible buscar(String id) {
-		if (id.compareToIgnoreCase(id) == 0)
+	public ParticipantePosible buscar(String unId) {
+		if (id.compareToIgnoreCase(unId) == 0)
 			return this;
-		else if (id.compareToIgnoreCase(id) > 0)
+		else if (id.compareToIgnoreCase(unId) > 0)
 			// condicion ? si es verdadero : si no lo es
-			return (izquierda == null) ? null : izquierda.buscar(id);
+			return (izquierda == null) ? null : izquierda.buscar(unId);
 		else
-			return (derecha == null) ? null : derecha.buscar(id);
+			return (derecha == null) ? null : derecha.buscar(unId);
 	}
 	
 	

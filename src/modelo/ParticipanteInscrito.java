@@ -88,5 +88,18 @@ public class ParticipanteInscrito {
 		nuevo.participanteAnterior = this;
 		participanteSiguiente = nuevo;
 	}
+	
+	
+	public ParticipanteInscrito buscarParticipanteInscrito(String unId) {
+		//Compara el id del que invoca el metodo con el id por parametro
+		if(id.compareToIgnoreCase(unId) == 0)
+			return this;
+		
+		else if (id.compareToIgnoreCase(unId) > 0)
+			// condicion ? si es verdadero : si no lo es
+			return (participanteAnterior == null) ? null : participanteAnterior.buscarParticipanteInscrito(unId);
+		else
+			return(participanteSiguiente == null) ? null : participanteSiguiente.buscarParticipanteInscrito(unId);
+	}	
 
 }

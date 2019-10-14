@@ -63,7 +63,7 @@ public class Main {
 				System.out.println("Ingrese el ID del participante que desea buscar");
 				String idBuscado = lector.nextLine();
 				
-				System.out.println(copaPanamericana.buscarPosibleParticipante(idBuscado));
+				System.out.println(copaPanamericana.mostrarPosibleParticipanteEncontrado(idBuscado));
 				
 			break;
 			
@@ -72,7 +72,7 @@ public class Main {
 				System.out.println("Ingrese el ID del participante que desea buscar");
 				String idBuscado1 = lector.nextLine();
 				
-				System.out.println(copaPanamericana.buscarParticipanteInscrito(idBuscado1));
+				System.out.println(copaPanamericana.mostrarParticipanteInscritoEncontrado(idBuscado1));
 				
 			break;
 			
@@ -83,7 +83,8 @@ public class Main {
 				lector.nextLine();
 				
 				if(seleccionRuta == 1) {
-					System.out.println(copaPanamericana.cargarDatosGenerados(copaPanamericana.RUTA_PRUEBA));
+					//System.out.println(copaPanamericana.cargarDatosGenerados(copaPanamericana.RUTA_PRUEBA));
+					System.out.println(copaPanamericana.cargarDatosGenerados(copaPanamericana.RUTA_GENERADOS));
 				}
 				
 				else {
