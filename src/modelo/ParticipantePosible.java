@@ -72,9 +72,9 @@ public class ParticipantePosible implements Comparable {
 		return id.compareToIgnoreCase(otro.getId());
 	}
 
-	public void insertar(ParticipantePosible nuevo) {
-		//if (compareTo(nuevo) == 0)
-			// throw new ContactoRepetidoException( nuevo.nombre );
+	public void insertar(ParticipantePosible nuevo) throws ParticipanteRepetidoException {
+		if (compareTo(nuevo) == 0)
+			 throw new ParticipanteRepetidoException(nuevo.id);
 
 			// Verifica si el que invoca el metodo es mayor que el nuevo
 			if (compareTo(nuevo) > 0) {

@@ -105,7 +105,11 @@ public class CopaPanamericana {
 		if (primerParticipantePosible == null)
 			primerParticipantePosible = nuevo;
 		else
-			primerParticipantePosible.insertar(nuevo);
+			try {
+				primerParticipantePosible.insertar(nuevo);
+			} catch (ParticipanteRepetidoException e) {
+				e.getMessage();
+			}
 	}
 
 	// Metodo para agregar un participante inscrito ordenadamente
@@ -130,20 +134,6 @@ public class CopaPanamericana {
 				temp0.insertarDespues(nuevo);
 			}
 		}
-	}
-
-	// Metodo que verifica que el id no esta repetido
-
-	public boolean idRepetido(String id) {
-		boolean repetido = false;
-		ParticipanteInscrito actual = primerParticipanteInscrito;
-		while (actual != null) {
-			if (actual.getId().equals(id))
-				repetido = true;
-			else
-				actual = actual.getParticipanteSiguiente();
-		}
-		return repetido;
 	}
 
 	// Metodo que busca un posible participante y muestra cuanto tiempo tardo
