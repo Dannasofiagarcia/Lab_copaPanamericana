@@ -200,5 +200,16 @@ public class CopaPanamericana {
 		int cantidad = primerParticipantePosible.darPeso();
 		return cantidad;
 	}
+	
+	//Metodo que imprime los participantes inscritos
+	
+	public String imprimir() {
+		String msg = "";
+		ParticipanteInscrito actual = primerParticipanteInscrito;
+		while(actual != null) {
+			msg += actual.getNombre() + " - ";
+		}
+		return msg;
+	}
 
 }

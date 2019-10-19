@@ -22,18 +22,21 @@ public class Main {
 	public void showOptions() {
 		System.out.println("Bienvenido a la Copa Panamericana");
 		System.out.println("Seleccione la opción que desea");
+		System.out.println("Algunos de los metodos pueden tardar en cargar");
 		System.out.println("1. Registrar un posible participante");
 		System.out.println("2. Para agregar de manera aleatoria los participantes inscritos");		
 		System.out.println("3. Buscar un posible participante de la Copa");
 		System.out.println("4. Para buscar un participante inscrito en la Copa");
 		System.out.println("5. Cargar los datos al programa");
-		System.out.println("6. Salir");
+		System.out.println("7. Para imprimir los posibles participantes");
+		System.out.println("8. Para imprimir los participantes inscritos");
+		System.out.println("9. Salir");
 	}
 	
 	public void menu() {
 		int userInput = 0;
 
-		while (userInput != 6) {
+		while (userInput != 9) {
 			showOptions();
 			userInput = lector.nextInt();
 			lector.nextLine();
@@ -83,7 +86,7 @@ public class Main {
 				lector.nextLine();
 				
 				if(seleccionRuta == 1) {
-					//System.out.println(copaPanamericana.cargarDatosGenerados(copaPanamericana.RUTA_PRUEBA));
+//					System.out.println(copaPanamericana.cargarDatosGenerados(copaPanamericana.RUTA_PRUEBA));
 					System.out.println(copaPanamericana.cargarDatosGenerados(copaPanamericana.RUTA_GENERADOS));
 				}
 				
@@ -92,6 +95,10 @@ public class Main {
 					String rutaDatos = lector.nextLine();
 					System.out.println(copaPanamericana.cargarDatosGenerados(rutaDatos));
 				}
+			break;
+			
+			case 7:
+				System.out.println(copaPanamericana.imprimir());
 			break;
 				
 			}//Cierra el switch
